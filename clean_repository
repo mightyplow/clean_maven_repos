@@ -1,0 +1,11 @@
+#!/bin/bash
+
+repoDir=~/.m2/repository
+
+numExcluded=${1:-3}
+
+# get the parent directories of directories starting with a number; make the result unique
+for dir in `find $repoDir -iname '[0-9]*' -type d -exec dirname {} \; | uniq`; do
+   # find the directories ordered by version in the directories and remove all directories but the last 2
+   echo "`ls $dir/*/ -dv`" | head -n-${numExcluded} | xargs rm -rf
+done
